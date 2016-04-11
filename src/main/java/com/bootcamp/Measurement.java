@@ -1,54 +1,32 @@
 package com.bootcamp;
 
-import java.util.UnknownFormatConversionException;
+public abstract class Measurement {
 
-public class Measurement {
+  protected double value;
 
-  private double value;
-  private Unit unit;
+  public Measurement() {
 
-  public enum Unit {CM, M}
+  }
 
-  public Measurement(double value, Unit unit) {
+  public Measurement(double value) {
     this.value = value;
-    this.unit = unit;
-
-    if (unit == null) {
-      throw new UnknownFormatConversionException("Unknown Measurement");
-    }
   }
 
-  public Measurement convertToMeter() {
-    if (unit.equals(Unit.CM)) {
-      value = value / 100;
-      unit = Unit.M;
-    }
-    return this;
+  public <T extends Measurement> T convertTo(Class<T> unit)
+          throws IllegalAccessException, InstantiationException {
+    return unit.newInstance().fromCentimeter(centimeterValue());
   }
 
-  public Measurement convertToCentimeter() {
-    if (unit.equals(Unit.M)) {
-      value = value * 100;
-      unit = Unit.CM;
-    }
-    return this;
+  public abstract double centimeterValue();
+
+  protected abstract <T extends Measurement> T fromCentimeter(double centimeterValue);
+
+  protected <T extends Measurement> T add(T measurement)
+          throws IllegalAccessException, InstantiationException {
+    return measurement.getClass().newInstance().fromCentimeter
+            (centimeterValue() + measurement.centimeterValue());
   }
 
-  public double centimeterValue() {
-    double cmValue;
-    switch (unit) {
-      case M:
-        cmValue = value * 100;
-        break;
-      case CM:
-        cmValue = value;
-        break;
-      default:
-        throw new UnknownFormatConversionException("Unknown Measurement");
-    }
-
-    return cmValue;
-  }
 
   @Override
   public boolean equals(Object obj) {
@@ -63,6 +41,6 @@ public class Measurement {
 
   @Override
   public String toString() {
-    return value + " " + unit;
+    return value + " ";
   }
 }
