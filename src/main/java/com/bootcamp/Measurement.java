@@ -9,7 +9,7 @@ public class Measurement {
 
   public enum Unit {CM, M}
 
-  Measurement(double value, Unit unit) {
+  public Measurement(double value, Unit unit) {
     this.value = value;
     this.unit = unit;
 
