@@ -1,8 +1,8 @@
 package com.bootcamp.length;
 
-import java.lang.reflect.InvocationTargetException;
+import com.bootcamp.Unit;
 
-public abstract class Length {
+public abstract class Length implements Unit<Length> {
 
   protected double value;
 
@@ -10,31 +10,13 @@ public abstract class Length {
     this.value = value;
   }
 
-  public <T extends Length> T convertTo(Class<T> unit)
-          throws IllegalAccessException, InstantiationException,
-          NoSuchMethodException, InvocationTargetException {
-    Length length = unit.getConstructor(double.class).newInstance(centimeterValue());
-    length.applyConversionFactor();
-    return (T) length;
-  }
-
-  public <T extends Length> T add(T measurement)
-          throws IllegalAccessException, InstantiationException,
-          NoSuchMethodException, InvocationTargetException {
-
-    Length length = measurement.getClass().getConstructor(double.class)
-            .newInstance(centimeterValue() + ((Length) measurement).centimeterValue());
-    length.applyConversionFactor();
-    return (T) length;
-  }
-
   public abstract double getFactor();
 
-  private double centimeterValue() {
+  public double baseValue() {
     return value * getFactor();
   }
 
-  private void applyConversionFactor() {
+  public void applyConversionFactor() {
     value = value / getFactor();
   }
 
@@ -43,7 +25,7 @@ public abstract class Length {
     boolean areEqual = false;
 
     if (obj instanceof Length) {
-      areEqual = centimeterValue() == ((Length) obj).centimeterValue();
+      areEqual = baseValue() == ((Length) obj).baseValue();
     }
 
     return areEqual;

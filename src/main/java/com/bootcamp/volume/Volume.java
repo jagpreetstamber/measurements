@@ -1,8 +1,8 @@
 package com.bootcamp.volume;
 
-import java.lang.reflect.InvocationTargetException;
+import com.bootcamp.Unit;
 
-public abstract class Volume {
+public abstract class Volume implements Unit<Volume> {
 
   private double value;
 
@@ -12,19 +12,12 @@ public abstract class Volume {
 
   public abstract double getConversionFactor();
 
-  public <T extends Volume> T convertTo(Class<T> unit)
-          throws ClassNotFoundException, NoSuchMethodException,
-          IllegalAccessException, InvocationTargetException, InstantiationException {
-    Volume volume = unit.getConstructor(double.class).newInstance(miliLiterValue());
-    volume.applyConversionFactor();
-    return (T) volume;
-  }
-
-  private double miliLiterValue() {
+  @Override
+  public double baseValue() {
     return value * getConversionFactor();
   }
 
-  private void applyConversionFactor() {
+  public void applyConversionFactor() {
     value = value / getConversionFactor();
   }
 
@@ -33,7 +26,7 @@ public abstract class Volume {
     boolean areEqual = false;
 
     if (obj instanceof Volume) {
-      areEqual = miliLiterValue() == ((Volume) obj).miliLiterValue();
+      areEqual = baseValue() == ((Volume) obj).baseValue();
     }
 
     return areEqual;

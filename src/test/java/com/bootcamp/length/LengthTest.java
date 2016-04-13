@@ -26,7 +26,7 @@ public class LengthTest {
   @Test
   public void testConversionCmToMeter()
           throws InstantiationException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+          NoSuchMethodException, InvocationTargetException, ClassNotFoundException {
 
     Centimeter centimeter = new Centimeter(300);
     Meter expected = new Meter(3);
@@ -39,7 +39,7 @@ public class LengthTest {
   @Test
   public void testConversionMeterToCm()
           throws InstantiationException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+          NoSuchMethodException, InvocationTargetException, ClassNotFoundException {
 
     Length meter = new Meter(3);
     Centimeter expected = new Centimeter(300);
@@ -54,11 +54,11 @@ public class LengthTest {
           throws InstantiationException, IllegalAccessException,
           NoSuchMethodException, InvocationTargetException {
 
-    Centimeter expected = new Centimeter(600);
+    Length expected = new Centimeter(600);
     Length meter = new Meter(3);
     Centimeter centimeter = new Centimeter(300);
 
-    Centimeter actual = meter.add(centimeter);
+    Length actual = meter.add(centimeter);
 
     Assert.assertEquals(actual, expected);
   }
